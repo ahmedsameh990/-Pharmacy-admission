@@ -1,0 +1,521 @@
+/* ============================================================
+   Faculty of Pharmacy — Admission Info Page
+   Mobile-first · RTL · Black & White Only
+   ============================================================ */
+
+/* ---------- Google Font Import ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
+/* ---------- Custom Properties ---------- */
+:root {
+  /* Backgrounds */
+  --bg-primary: #f9f9f9;
+  --bg-secondary: #f0f0f0;
+  --bg-tertiary: #e8e8e8;
+
+  /* Text */
+  --text-primary: #111;
+  --text-secondary: #333;
+  --text-muted: #666;
+  --text-dim: #555;
+  --text-faint: #888;
+  --text-border: #444;
+  --text-hover: #222;
+
+  /* Borders */
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-light: rgba(0, 0, 0, 0.1);
+  --border-medium: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  --border-hover: rgba(0, 0, 0, 0.2);
+
+  /* Surfaces */
+  --surface-ghost: rgba(0, 0, 0, 0.02);
+  --surface-hover: rgba(0, 0, 0, 0.04);
+  --surface-active: rgba(0, 0, 0, 0.06);
+  --surface-raised: rgba(0, 0, 0, 0.08);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  /* Layout */
+  --app-max-width: 480px;
+  --header-height: 72px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  --radius-pill: 20px;
+
+  /* Transitions */
+  --transition-fast: all 0.3s ease;
+}
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+  direction: rtl;
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle diagonal line texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.04) 0px,
+    rgba(0, 0, 0, 0.04) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+}
+
+/* ---------- Scrollbar Styling ---------- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) var(--bg-primary);
+}
+
+/* ---------- App Container ---------- */
+.app {
+  position: relative;
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  z-index: 1;
+}
+
+/* ---------- Header ---------- */
+.header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 100%;
+  max-width: var(--app-max-width);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.header img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ---------- Watermark ---------- */
+.watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+  opacity: 0.04;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.watermark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ---------- Pages / Sections ---------- */
+.page {
+  display: none;
+  padding: 90px 20px 40px;
+  min-height: 100vh;
+}
+
+.page.active {
+  display: block;
+}
+
+/* ---------- Page Transitions ---------- */
+.page.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.page.fade-out {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* ---------- Homepage ---------- */
+.home {
+  text-align: center;
+}
+
+.home-content {
+  padding-top: 20px;
+}
+
+.nav-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.home-logo {
+  width: 120px;
+  margin-bottom: 24px;
+  border-radius: var(--radius-xl);
+}
+
+.home-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.5px;
+}
+
+.home-subtitle {
+  font-size: 1rem;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+}
+
+/* ---------- Navigation Buttons ---------- */
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  padding: 18px 24px;
+  margin-bottom: 16px;
+  background: var(--surface-ghost);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-btn:hover,
+.nav-btn:active {
+  background: var(--surface-active);
+  border-color: var(--border-hover);
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+.nav-btn .icon {
+  position: absolute;
+  right: 20px;
+  font-size: 1.3rem;
+  opacity: 0.7;
+}
+
+.btn-label {
+  flex: 1;
+  text-align: center;
+}
+
+/* ---------- Back Button ---------- */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: var(--transition-fast);
+}
+
+.back-btn:hover {
+  background: var(--surface-hover);
+}
+
+/* ---------- Section Title ---------- */
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* ---------- Document Image Container ---------- */
+.doc-image-container {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.doc-image-container:active {
+  transform: scale(0.98);
+}
+
+.doc-image-container img {
+  width: 100%;
+  display: block;
+}
+
+/* ---------- Caption ---------- */
+.caption {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 12px;
+  line-height: 1.7;
+}
+
+/* ---------- Map Section ---------- */
+.map-section {
+  margin-bottom: 32px;
+}
+
+.map-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-hover);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- Medical Section ---------- */
+.medical-section {
+  text-align: center;
+}
+
+.medical-img {
+  width: 100%;
+  max-width: 320px;
+  border-radius: var(--radius-xl);
+  margin-bottom: 24px;
+  border: 1px solid var(--border-light);
+}
+
+/* ---------- Link Button ---------- */
+.link-btn {
+  display: block;
+  width: 100%;
+  padding: 16px 24px;
+  background: var(--surface-hover);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  font-family: inherit;
+  transition: var(--transition-fast);
+}
+
+.link-btn:hover {
+  background: var(--surface-raised);
+  transform: translateY(-2px);
+}
+
+/* ---------- Social / Join Us Cards ---------- */
+.social-card {
+  background: var(--surface-ghost);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: var(--transition-fast);
+}
+
+.social-card:hover {
+  border-color: var(--border-hover);
+}
+
+.social-card h3 {
+  font-size: 1rem;
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.social-card a {
+  color: var(--text-border);
+  font-size: 0.85rem;
+  word-break: break-all;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 2px;
+}
+
+.social-card a:hover {
+  color: var(--text-primary);
+}
+
+/* ---------- Image Lightbox / Modal ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: var(--radius-sm);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 2001;
+}
+
+/* ---------- Language Toggle ---------- */
+.lang-toggle {
+  background: var(--surface-hover);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--transition-fast);
+}
+
+.lang-toggle:hover {
+  background: var(--surface-active);
+  color: var(--text-primary);
+}
+
+/* ---------- Tap Hint ---------- */
+.tap-hint {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 30px;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-top: 1px solid var(--border-subtle);
+  width: 100%;
+}
+
+.footer .footer-link {
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-fast);
+  text-decoration: none;
+}
+
+.footer .footer-link:hover {
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
